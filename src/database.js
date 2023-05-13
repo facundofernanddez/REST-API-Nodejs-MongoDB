@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
+import config from "./config.js";
 
 (async () => {
-  const db = await mongoose.connect("mongodb://127.0.0.1:27017/tasksapi");
+  const db = await mongoose.connect(config.mongodbURL);
 
   console.log("database is connected to:", db.connection.name);
 })();
