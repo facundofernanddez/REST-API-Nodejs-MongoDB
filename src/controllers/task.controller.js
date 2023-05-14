@@ -5,6 +5,11 @@ export const findAllTasks = async (req, res) => {
   res.json(tasks);
 };
 
+export const findAllDoneTask = async (req, res) => {
+  const doneTasks = await Task.find({ done: true });
+  res.json(doneTasks);
+};
+
 export const createTask = async (req, res) => {
   const newTask = new Task({
     title: req.body.title,
@@ -18,4 +23,15 @@ export const createTask = async (req, res) => {
 export const findOneTask = async (req, res) => {
   const task = await Task.findById(req.params.id);
   res.json(task);
+};
+
+export const deleteTask = async (req, res) => {
+  const deletedTask = await Task.findByIdAndDelete(req.params.id);
+  res.json(`${deletedTask.title} ha sido borrada completamente`);
+};
+
+export const updateTask = async (req, res) => {
+  await Task.findByIdAndUpdate(req.params.id, req.body);
+
+  res.json("task updated");
 };
