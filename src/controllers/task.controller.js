@@ -1,9 +1,21 @@
 import Task from "../models/Task.js";
+import { getPagination } from "../libs/getPagination.js";
 
 export const findAllTasks = async (req, res) => {
   try {
-    const tasks = await Task.find();
-    res.json(tasks);
+    const { size, page, title } = req.query;
+
+    const condition = title
+      ? {
+          title: { $regex: new RegExp(title), $options: "i" },
+        }
+      : {};
+
+    const { limit, offset } = getPagination(page, size);
+
+    const data = await Task.paginate(condition, { offset, limit });
+
+    res.json(data);
   } catch (error) {
     res.status(500).json({ message: error.message || "algo salio mal" });
   }
